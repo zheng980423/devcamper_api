@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 //route files
-const bootcamps = require('./routes/bootcamps');
+const bootcamps = require('./routes/bootcampRoutes');
 
 //Load env vars
 dotenv.config({ path: './config/config.env' });
