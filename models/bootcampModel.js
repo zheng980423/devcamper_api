@@ -1,3 +1,4 @@
+const slugify = require('slugify');
 const mongoose = require('mongoose');
 const bootcampSchema = new mongoose.Schema(
   {
@@ -107,4 +108,11 @@ const bootcampSchema = new mongoose.Schema(
   //   toObject: { virtuals: true },
   // }
 );
+
+//Create bootcampSlug from the name
+//modern web=> mordern-web
+bootcampSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
 module.exports = mongoose.model('Bootcamp', bootcampSchema);
