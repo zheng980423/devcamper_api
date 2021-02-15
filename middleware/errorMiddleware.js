@@ -1,13 +1,25 @@
-const notFound = (req, res, next) => {
-  const error = new Error(`Not found - ${req.originalUrl}`);
-  res.status(404);
-  next(error);
-};
+const ErrorResponse = require('../utils/errorResponse');
+
+// const notFound = (req, res, next) => {
+//   const error = new Error(`Not found - ${req.originalUrl}`);
+//   res.status(404);
+//   next(error);
+// };
 const errorHandler = (err, req, res, next) => {
-  res.status(err.statusCode || 500).json({
+  let error = {
+    ...err,
+  };
+  error.message = err.message;
+
+  //mongoose bad objectId
+  if (err.name === 'CastError') {
+    const message = `Resource not found with id of ${err.value}`;
+    error = new ErrorResponse(message, 404);
+  }
+
+  res.status(error.statusCode || 500).json({
     succcess: false,
-    err: err.message || 'Server Error',
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    error: error.message || 'Server Error',
   });
 };
-module.exports = { notFound, errorHandler };
+module.exports = { errorHandler };
