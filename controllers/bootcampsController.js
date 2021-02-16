@@ -8,13 +8,40 @@ const Bootcamp = require('../models/bootcampModel');
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   let query;
 
-  let queryStr = JSON.stringify(req.query);
+  //copy request.query
+  const reqQuery = { ...req.query };
 
+  // fields to exclude
+  const removeFields = ['select', 'sort'];
+
+  //loop over removeFields and delete them from reqQuery
+  removeFields.forEach(param => delete reqQuery[param]);
+
+  console.log(reqQuery);
+  //create query string
+  let queryStr = JSON.stringify(reqQuery);
+
+  //create operators ($gt ,$gte,etc)
   queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match => `$${match}`);
 
+  //Finding resource
   query = Bootcamp.find(JSON.parse(queryStr));
 
-  console.log(queryStr);
+  //select Fields
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    console.log(fields);
+    query = query.select(fields);
+  }
+
+  //sort
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+  //executing query
   const bootcamps = await query;
 
   res
