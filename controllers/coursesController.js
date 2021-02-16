@@ -12,10 +12,21 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   if (req.params.bootcampId) {
     query = Course.find({ bootcamp: req.params.bootcampId });
   } else {
-    query = Course.find();
+    query = Course.find().populate({
+      path: 'bootcamp',
+      select: 'name description',
+    });
   }
 
   const courses = await query;
+  if (courses.length === 0) {
+    return next(
+      new ErrorResponse(
+        `Bootcamp not found with id of ${req.params.bootcampId}`,
+        404
+      )
+    );
+  }
 
   res.status(200).json({
     success: true,
