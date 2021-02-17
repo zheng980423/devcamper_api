@@ -16,6 +16,7 @@ connectDB();
 //route files
 const bootcamps = require('./routes/bootcampRoutes');
 const courses = require('./routes/coursesRoutes');
+const auth = require('./routes/authRoutes');
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Mount router
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
 // app.use(notFound);
