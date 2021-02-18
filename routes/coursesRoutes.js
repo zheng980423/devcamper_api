@@ -7,11 +7,12 @@ const {
   deleteCourse,
 } = require('../controllers/coursesController');
 const Course = require('../models/courseModel');
-const advancedResults = require('../middleware/advancedResultMiddleware');
 
 const router = express.Router({ mergeParams: true });
 
 const { protect, authorize } = require('../middleware/authMiddleware');
+const advancedResults = require('../middleware/advancedResultMiddleware');
+
 router
   .route('/')
   .get(
