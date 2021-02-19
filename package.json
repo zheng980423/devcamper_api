@@ -17,6 +17,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "express-fileupload": "^1.2.1",
+    "express-mongo-sanitize": "^2.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.16",
     "morgan": "^1.10.0",

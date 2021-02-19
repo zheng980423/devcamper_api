@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
   console.log(err);
   //mongoose bad objectId id的长度不同
   if (err.name === 'CastError') {
-    const message = `Resource not found with id of ${err.value}`;
+    const message = `Resource not found`;
     error = new ErrorResponse(message, 404);
   }
   //mongoose duplicate key 重复创建bootcamp
